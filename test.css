@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: rgb(200,200,200);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* DOTS ################################################## */
+.dot {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.redD {border: 1px solid red;}
+.greenD {border: 1px solid green;}
+.blueD {border: 1px solid blue;}
+.yellowD {border: 1px solid yellow;}
+.purpleD {border: 1px solid purple;}
+.ct {
+    border-radius: 50%;
+    border: 2px solid black;
+}
+
+/* LINES ################################################## */
+.line {
+    position: absolute;
+    /* top: 200px;
+    left: 200px;
+    width: 100px; */
+    border: 1px dashed black;
+}
