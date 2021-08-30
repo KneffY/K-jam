@@ -10,7 +10,7 @@ class Dot {
         this.color = color;
         this.selected = false;
         this.manual = true;
-        this.speed = 8;
+        this.speed = 5;
         this.vec = [];
     }
     setPosition (x,y) { // requires DOM
@@ -77,7 +77,7 @@ class Line {
     }
     setAngle (angle) {
         this.DOM.style.transform = `rotate(${angle}rad)`; this.angle = angle;   
-    }
+    } // <========================= add rotate feature
     detectCollision (point) {
         let fun = (x) => {return this.m*(x - this.x1) + this.y1;}
         let cR = 20; // collision Radio <======================
@@ -209,7 +209,7 @@ document.addEventListener ('keyup', (event) => {
         let f = Math.floor((Math.random() * 100) + 1); 
         let ang = (Math.PI*2*f)/100; // rad
         let x1 = Math.cos (ang)*400 + mS.x; let y1 = Math.sin (ang)*400 + mS.y;
-        let x2 = Math.cos (ang)*250 + mS.x; let y2 = Math.sin (ang)*250 + mS.y;
+        let x2 = Math.cos (ang)*275 + mS.x; let y2 = Math.sin (ang)*275 + mS.y;
         let vec = vecTo (x1,y1,x2,y2);
         let c = chooseColor (); // color 
         let nD1 = new Dot (c); 
@@ -221,8 +221,19 @@ document.addEventListener ('keyup', (event) => {
         nL.startDOM ();
         dots.push (nD1); dots.push (nD2); 
         lines.push (nL);
-    } else if (event.code == 'KeyL') {
+    } else if (event.code == 'KeyL') { // starts stage
         stage.startDOM();
+
+    } else if (event.code == "KeyU") { // generates player
+        let x1 = mS.x - 120; let x2 = mS.x + 120;
+        let c = chooseColor (); // color 
+        let nD1 = new Dot (c); 
+        let nD2 = new Dot (c);
+        nD1.startDOM (x1, mS.y); nD2.startDOM (x2, mS.y);
+        let nL = new Line (nD1, nD2); 
+        nL.startDOM ();
+        dots.push (nD1); dots.push (nD2); 
+        lines.push (nL);
     }
 })
 
@@ -270,7 +281,7 @@ setInterval (() => {
     // lines auto control
     if (lines.length > 0) {
         for (let i = 0; i < lines.length; i++) {
-            if (inRad(mS.x, mS.y, lines[i].b.x, lines[i].b.y, 275+150) && lines[i].b.manual == false) {
+            if (inRad(mS.x, mS.y, lines[i].b.x, lines[i].b.y, 420) && lines[i].b.manual == false) {
                 lines[i].a.move (lines[i].a.vec);
                 lines[i].b.move (lines[i].b.vec);
             } else if (lines[i].b.manual == false){
