@@ -9,7 +9,9 @@ class Dot {
         this.size = 50;
         this.color = color;
         this.selected = false;
+        this.manual = true;
         this.speed = 8;
+        this.vec = [];
     }
     setPosition (x,y) { // requires DOM
         this.DOM.style.top = `${y-this.size/2}px`; this.y = y;
@@ -45,6 +47,7 @@ class Dot {
     destroyDOM () {
         this.DOM.className = '';
         this.setPosition(0,0);
+        this.ct.className = '';
     }
 }
 
@@ -101,6 +104,8 @@ class Line {
     destroyDOM () {
         this.DOM.className = '';
         this.setPosition(0,0);
+        this.a.destroyDOM();
+        this.b.destroyDOM();
     }
     reSet () { // execute every iteration
         this.x = (this.a.x + this.b.x)/2;
@@ -118,6 +123,26 @@ class Line {
     }
 }
 
+// screen center
+let mS = {x: window.innerWidth / 2, y: window.innerHeight / 2};
+//stage
+let stage = {
+    x: 0,
+    y: 0,
+    DOM: '',
+    setPosition (x,y) { // requires DOM
+        stage.DOM.style.top = `${y-275}px`; stage.y = y; 
+        stage.DOM.style.left = `${x-275}px`; stage.x = x;
+    },
+    startDOM () {
+        let dom = document.createElement ('div'); 
+        dom.classList.add ('stage'); 
+        document.body.appendChild(dom); 
+        stage.DOM = dom; 
+        stage.setPosition(mS.x,mS.y);
+    }
+}
+
 // lines
 let dots = [];
 let lines = [];
@@ -125,8 +150,6 @@ let lines = [];
 // colors
 let colors = ['red','green','blue','yellow','purple'];
 
-// screen center
-let mS = {x: window.innerWidth / 2, y: window.innerHeight / 2};
 // mouse element 
 let mouse = {x: 0, y: 0};
 
@@ -187,14 +210,19 @@ document.addEventListener ('keyup', (event) => {
         let ang = (Math.PI*2*f)/100; // rad
         let x1 = Math.cos (ang)*400 + mS.x; let y1 = Math.sin (ang)*400 + mS.y;
         let x2 = Math.cos (ang)*250 + mS.x; let y2 = Math.sin (ang)*250 + mS.y;
+        let vec = vecTo (x1,y1,x2,y2);
         let c = chooseColor (); // color 
         let nD1 = new Dot (c); 
         let nD2 = new Dot (c);
         nD1.startDOM (x1, y1); nD2.startDOM (x2, y2);
+        nD1.manual = false; nD2.manual = false;
+        nD1.vec = vec; nD2.vec = vec;
         let nL = new Line (nD1, nD2); 
         nL.startDOM ();
         dots.push (nD1); dots.push (nD2); 
         lines.push (nL);
+    } else if (event.code == 'KeyL') {
+        stage.startDOM();
     }
 })
 
@@ -233,10 +261,21 @@ setInterval (() => {
             }
         }
     }
-    // lines control
+    // lines manual control
     if (lines.length > 0) {
         for (let i = 0; i < lines.length; i++) {
             lines[i].reSet ();
+        }
+    }
+    // lines auto control
+    if (lines.length > 0) {
+        for (let i = 0; i < lines.length; i++) {
+            if (inRad(mS.x, mS.y, lines[i].b.x, lines[i].b.y, 275+150) && lines[i].b.manual == false) {
+                lines[i].a.move (lines[i].a.vec);
+                lines[i].b.move (lines[i].b.vec);
+            } else if (lines[i].b.manual == false){
+                lines[i].destroyDOM ()
+            }
         }
     }
     // detect collisions

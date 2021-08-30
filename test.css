@@ -9,13 +9,11 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 /* STAGE ################################################# */
-#stage {
+.stage {
+    position: absolute;
     width: 550px;
     height: 550px;
     border-radius: 50%;
