@@ -59,16 +59,18 @@ class Line {
         this.y2 = b.y;
         this.x = (this.x1 + this.x2)/2;
         this.y = (this.y1 + this.y2)/2;
-        this.extension = Math.sqrt(Math.abs(this.x1 - this.x2)**2 + Math.abs(this.y1 - this.y2)**2);
+        this.extension = Math.sqrt(Math.abs(this.x1 - this.x2)**2 + Math.abs(this.y1 - this.y2)**2) + 10; // +10
+        this.side = 10; // new
         this.m = (this.y2 - this.y1)/(this.x2 - this.x1);
         this.angle = -angTo (vecTo (this.x1,this.y1,this.x2,this.y2));
     }
     setPosition (x,y) { // requires DOM
-        this.DOM.style.top = `${y}px`; this.y = y; // <===== check
+        this.DOM.style.top = `${y-this.side/2}px`; this.y = y; // <===== check
         this.DOM.style.left = `${x-this.extension/2}px`; this.x = x;
     }
-    setExtension () {
+    setDimentions () {
         this.DOM.style.width = `${this.extension}px`;
+        this.DOM.style.height = `${this.side}px`;
     }
     setAngle (angle) {
         this.DOM.style.transform = `rotate(${angle}rad)`; this.angle = angle;   
@@ -89,10 +91,10 @@ class Line {
     }
     startDOM () {
         let newLine = document.createElement ('div'); 
-        newLine.classList.add ('line'); 
+        newLine.classList.add ('block'); // block from line
         document.body.appendChild(newLine); 
         this.DOM = newLine;
-        this.setExtension (); 
+        this.setDimentions (); 
         this.setPosition(this.x,this.y);
         this.setAngle(this.angle);
     }
@@ -108,10 +110,10 @@ class Line {
         this.x2 = this.b.x;
         this.y2 = this.b.y;
         this.m = (this.y2 - this.y1)/(this.x2 - this.x1);
-        this.extension = Math.sqrt(Math.abs(this.x1 - this.x2)**2 + Math.abs(this.y1 - this.y2)**2);
+        this.extension = Math.sqrt(Math.abs(this.x1 - this.x2)**2 + Math.abs(this.y1 - this.y2)**2) + 10;
         this.angle = -angTo (vecTo (this.x1,this.y1,this.x2,this.y2));
         this.setPosition (this.x, this.y);
-        this.setExtension ();
+        this.setDimentions ();
         this.setAngle (this.angle);
     }
 }
