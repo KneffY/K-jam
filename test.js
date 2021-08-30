@@ -3,6 +3,7 @@
 class Dot {
     constructor (color) {
         this.DOM = '';
+        this.ct = '';
         this.x = 0;
         this.y = 0;
         this.size = 50;
@@ -18,6 +19,17 @@ class Dot {
         let mod = (vec[0]**2 + vec[1]**2)**(0.5); let uni = [(vec[0]/mod),(vec[1]/mod)]; 
         this.setPosition(this.x + uni[0]*this.speed, this.y - uni[1]*this.speed);
     }
+    collides () {
+        if (this.ct.className.includes ('collides') == false) {
+            this.ct.classList.add ('collide');
+            console.log ('adds collision');
+        }
+    }
+    notCollides () {
+        if (this.ct.className.includes ('collide')) {
+            this.ct.classList.remove ('collide');
+        }
+    }
     startDOM (x,y) {
         let newDot = document.createElement ('div'); 
         newDot.classList.add ('dot'); 
@@ -27,6 +39,7 @@ class Dot {
         ct.classList.add ('ct'); 
         this.DOM = newDot; 
         this.DOM.appendChild (ct);
+        this.ct = ct;
         this.setPosition(x,y);
     }
     destroyDOM () {
@@ -68,6 +81,9 @@ class Line {
             let cY = fun(point.x);
             if (inRad(point.x,cY,point.x,point.y,cR)) {
                 console.log ('COLLIDE');
+                point.collides ();
+            } else {
+                point.notCollides ();
             }
         }
     }
@@ -183,10 +199,11 @@ document.addEventListener('mouseup', (event) => {
     }
 })
 
+// get screen centre always
+window.addEventListener ('resize', (event) => {mS = {x: window.innerWidth / 2, y: window.innerHeight / 2};})
+
 // main clock
 setInterval (() => {
-    // get centre of screen
-    let mS = {x: window.innerWidth / 2, y: window.innerHeight / 2};
     // dots control
     if (lines.length > 0) {
         for (let i = 0; i < dots.length; i++) {

@@ -40,3 +40,15 @@ body {
     width: 100px; */
     border: 1px dashed black;
 }
+ /* COLLISION ############################################# */
+ .collide {
+     box-shadow: inset 0 0 10px 5px red;
+     animation: rotate 5s infinite linear;
+     width: 15px;
+     height: 15px;
+     border: 2px dotted red;
+ }
+ @keyframes rotate {
+     from {transform: rotate(0deg);}
+     to {transform: rotate(360deg);}
+ }
