@@ -157,7 +157,7 @@ let angTo = (vector) => {
 
 // create lines and dots
 document.addEventListener ('keyup', (event) => {
-    if (event.code = 'KeyP') { // generate new line every time u press P <==============
+    if (event.code == 'KeyP') { // generate new line every time u press P <==============
         let f = Math.floor((Math.random() * 100) + 1); // random factor to choose a color
         let x = Math.floor((Math.random() * 100) + 1); // random factor to place dot.x
         let y = Math.floor((Math.random() * 100) + 1); // random factor to place dot.y
