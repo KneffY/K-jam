@@ -155,6 +155,15 @@ let angTo = (vector) => {
     }
 }; // returns - angles in radians
 
+let chooseColor = () => {
+    let f = Math.floor((Math.random() * 100) + 1); 
+    if (f < 20) {return colors[0];} 
+    else if (f < 40) {return colors[1];}
+    else if (f < 60) {return colors[2];}
+    else if (f < 80) {return colors[3];}
+    else {return colors[4];}
+}
+
 // EVENTS ############################################################################
 
 // create lines and dots
@@ -163,12 +172,7 @@ document.addEventListener ('keyup', (event) => {
         let f = Math.floor((Math.random() * 100) + 1); // random factor to choose a color
         let x = Math.floor((Math.random() * 100) + 1); // random factor to place dot.x
         let y = Math.floor((Math.random() * 100) + 1); // random factor to place dot.y
-        let c = ''; // color 
-        if (f < 20) {c = colors[0];} 
-        else if (f < 40) {c = colors[1];}
-        else if (f < 60) {c = colors[2];}
-        else if (f < 80) {c = colors[3];}
-        else {c = colors[4];}
+        let c = chooseColor (); // color 
         let nD1 = new Dot (c); // creates new dot 1
         let nD2 = new Dot (c); // creates second dot
         nD1.startDOM (mS.x + x, mS.y + y); nD2.startDOM (mS.x - x, mS.y - y); // initialize both dots
@@ -176,6 +180,21 @@ document.addEventListener ('keyup', (event) => {
         nL.startDOM ();
         dots.push (nD1); dots.push (nD2); // send dots to a list
         lines.push (nL); // send line to a list
+
+    } else if (event.code == 'KeyO') { // generate a new stardar line
+        // it must have 150px long and the fartest must be about 400px away
+        let f = Math.floor((Math.random() * 100) + 1); 
+        let ang = (Math.PI*2*f)/100; // rad
+        let x1 = Math.cos (ang)*400 + mS.x; let y1 = Math.sin (ang)*400 + mS.y;
+        let x2 = Math.cos (ang)*250 + mS.x; let y2 = Math.sin (ang)*250 + mS.y;
+        let c = chooseColor (); // color 
+        let nD1 = new Dot (c); 
+        let nD2 = new Dot (c);
+        nD1.startDOM (x1, y1); nD2.startDOM (x2, y2);
+        let nL = new Line (nD1, nD2); 
+        nL.startDOM ();
+        dots.push (nD1); dots.push (nD2); 
+        lines.push (nL);
     }
 })
 
