@@ -311,6 +311,17 @@ let lifes = {
 // ENDGAME
 let won = document.getElementById ('won');
 let lost = document.getElementById ('lost');
+let restart = {
+    x: 0, y: 0, DOM: document.getElementById('restart'), size: [200,60],
+    setPosition (x,y) { // requires DOM
+        restart.DOM.style.top = `${y-restart.size[1]/2}px`; restart.y = y; 
+        restart.DOM.style.left = `${x-restart.size[0]/2}px`; restart.x = x;
+    },
+    startDOM (x,y) {
+        restart.DOM.style.display = 'flex';
+        restart.setPosition (x,y);
+    }
+}
 
 // lines
 let dots = [];
@@ -339,6 +350,8 @@ let sS = 0; // 0.05
  // audio
 let audio1 = document.createElement('audio');
 audio1.setAttribute('src', 'v3.0.mpeg');
+
+
 
 // FUNC ################################################################################
 
@@ -455,6 +468,9 @@ document.addEventListener ('keyup', (event) => {
         auxPlayer.aMoving = false; 
     } else if (event.code == 'KeyF' && stage.playerOn == true) { // grow up
         player.expand ();
+    } else if (event.code == 'KeyR' && stage.over == true) {
+        // window.location.reload();
+        location.reload();
     }
 })
 
@@ -610,9 +626,11 @@ setInterval (() => {
         if (lifes.num.length == 0 && mC) {
             stage.over = true;
             lost.style.display = 'flex';
+            restart.startDOM (mS.x, mS.y+200);
         } else if (inRad (player.x, player.y, player.a.x, player.a.y, 200) == false) {
             stage.over = true;
             won.style.display = 'flex';
+            restart.startDOM (mS.x, mS.y+200);
         }
     }
 
