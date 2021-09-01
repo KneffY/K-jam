@@ -16,6 +16,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    /* to not interact*/
+    /* pointer-events: none;  */
+    user-select: none;
+    cursor: none;
 }
 
 /* STAGE ################################################# */
